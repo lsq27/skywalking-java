@@ -14,5 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-spring-webflux-5.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons.define.BodyInserterRequestInstrumentation
-spring-webflux-5.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient.define.WebFluxWebClientInstrumentation5x
+type: jvm
+entryService: http://localhost:8080/spring-webflux-webclient-scenario/case/spring-webflux-webclient-scenario
+healthCheck: http://localhost:8080/spring-webflux-webclient-scenario/case/healthCheck
+startScript: ./bin/startup.sh
+runningMode: with_optional
+withPlugins: apm-spring-webflux-6.x-webclient-plugin.jar

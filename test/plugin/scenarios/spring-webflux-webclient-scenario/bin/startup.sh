@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -14,5 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-spring-webflux-5.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons.define.BodyInserterRequestInstrumentation
-spring-webflux-5.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient.define.WebFluxWebClientInstrumentation5x
+home="$(cd "$(dirname $0)"; pwd)"
+
+java -jar ${agent_opts} ${home}/../libs/spring-webflux-webclient-scenario.jar &

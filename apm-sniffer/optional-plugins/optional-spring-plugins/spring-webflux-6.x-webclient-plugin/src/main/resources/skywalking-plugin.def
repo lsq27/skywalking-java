@@ -14,5 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-spring-webflux-5.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons.define.BodyInserterRequestInstrumentation
-spring-webflux-5.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient.define.WebFluxWebClientInstrumentation5x
+spring-webflux-6.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons.define.BodyInserterRequestInstrumentation
+spring-webflux-6.x-webclient=org.apache.skywalking.apm.plugin.spring.webflux.v6.webclient.define.WebFluxWebClientInstrumentation6x

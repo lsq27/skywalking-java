@@ -16,7 +16,7 @@
  *
  */
 
-package org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient.define;
+package org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons.define;
 
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -47,7 +47,7 @@ public class BodyInserterRequestInstrumentation extends ClassInstanceMethodsEnha
 
                     @Override
                     public String getMethodsInterceptor() {
-                        return "org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient.BodyInserterRequestInterceptor";
+                        return "org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons.BodyInserterRequestInterceptor";
                     }
 
                     @Override

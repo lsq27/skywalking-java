@@ -16,7 +16,7 @@
  *
  */
 
-package org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient;
+package org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons;
 
 import org.apache.skywalking.apm.agent.core.context.ContextCarrier;
 import org.apache.skywalking.apm.agent.core.context.ContextManager;
@@ -28,7 +28,6 @@ import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedI
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.v2.InstanceMethodsAroundInterceptorV2;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.v2.MethodInvocationContext;
 import org.apache.skywalking.apm.network.trace.component.ComponentsDefine;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import reactor.core.publisher.Mono;
@@ -36,62 +35,43 @@ import reactor.core.publisher.Mono;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public class WebFluxWebClientInterceptor implements InstanceMethodsAroundInterceptorV2 {
+public abstract class WebFluxWebClientInterceptor implements InstanceMethodsAroundInterceptorV2 {
 
     @Override
     public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, MethodInvocationContext context) throws Throwable {
 
     }
 
-    @Override
-    public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret, MethodInvocationContext context) throws Throwable {
-        // fix the problem that allArgument[0] may be null
-        if (allArguments[0] == null) {
-            return ret;
+    protected Mono<ClientResponse> createSpan(Object[] allArguments, Optional<Object> optional, Mono<ClientResponse> ret1) {
+        ClientRequest request = (ClientRequest) allArguments[0];
+        URI uri = request.url();
+        final String operationName = getRequestURIString(uri);
+        final String remotePeer = getIPAndPort(uri);
+        AbstractSpan span = ContextManager.createExitSpan(operationName, remotePeer);
+
+        optional.ifPresent(snapshot -> ContextManager.continued((ContextSnapshot) snapshot));
+
+        //set components name
+        span.setComponent(ComponentsDefine.SPRING_WEBCLIENT);
+        Tags.URL.set(span, uri.toString());
+        Tags.HTTP.METHOD.set(span, request.method().toString());
+        SpanLayer.asHttp(span);
+
+        final ContextCarrier contextCarrier = new ContextCarrier();
+        ContextManager.inject(contextCarrier);
+        if (request instanceof EnhancedInstance) {
+            ((EnhancedInstance) request).setSkyWalkingDynamicField(contextCarrier);
         }
-        Mono<ClientResponse> ret1 = (Mono<ClientResponse>) ret;
-        return Mono.subscriberContext().flatMap(ctx -> {
 
-            ClientRequest request = (ClientRequest) allArguments[0];
-            URI uri = request.url();
-            final String operationName = getRequestURIString(uri);
-            final String remotePeer = getIPAndPort(uri);
-            AbstractSpan span = ContextManager.createExitSpan(operationName, remotePeer);
-
-            // get ContextSnapshot from reactor context,  the snapshot is set to reactor context by any other plugin
-            // such as DispatcherHandlerHandleMethodInterceptor in spring-webflux-5.x-plugin
-            final Optional<Object> optional = ctx.getOrEmpty("SKYWALKING_CONTEXT_SNAPSHOT");
-            optional.ifPresent(snapshot -> ContextManager.continued((ContextSnapshot) snapshot));
-
-            //set components name
-            span.setComponent(ComponentsDefine.SPRING_WEBCLIENT);
-            Tags.URL.set(span, uri.toString());
-            Tags.HTTP.METHOD.set(span, request.method().toString());
-            SpanLayer.asHttp(span);
-
-            final ContextCarrier contextCarrier = new ContextCarrier();
-            ContextManager.inject(contextCarrier);
-            if (request instanceof EnhancedInstance) {
-                ((EnhancedInstance) request).setSkyWalkingDynamicField(contextCarrier);
-            }
-
-            //user async interface
-            span.prepareForAsync();
-            ContextManager.stopSpan();
-            return ret1.doOnSuccess(clientResponse -> {
-                HttpStatus httpStatus = clientResponse.statusCode();
-                if (httpStatus != null) {
-                    Tags.HTTP_RESPONSE_STATUS_CODE.set(span, httpStatus.value());
-                    if (httpStatus.isError()) {
-                        span.errorOccurred();
-                    }
-                }
-            }).doOnError(span::log).doFinally(s -> {
-                span.asyncFinish();
-            });
-        });
+        //user async interface
+        span.prepareForAsync();
+        ContextManager.stopSpan();
+        return ret1.doOnSuccess(doOnSuccess(span)).doOnError(span::log).doFinally(s -> span.asyncFinish());
     }
+
+    protected abstract Consumer<ClientResponse> doOnSuccess(AbstractSpan span);
 
     @Override
     public void handleMethodException(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Throwable t, MethodInvocationContext context) {
@@ -102,7 +82,7 @@ public class WebFluxWebClientInterceptor implements InstanceMethodsAroundInterce
 
     private String getRequestURIString(URI uri) {
         String requestPath = uri.getPath();
-        return requestPath != null && requestPath.length() > 0 ? requestPath : "/";
+        return requestPath != null && !requestPath.isEmpty() ? requestPath : "/";
     }
 
     // return ip:port

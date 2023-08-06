@@ -16,22 +16,21 @@
  *
  */
 
-package org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient.define;
+package org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons.define;
 
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.ConstructorInterceptPoint;
-import org.apache.skywalking.apm.agent.core.plugin.interceptor.v2.InstanceMethodsInterceptV2Point;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.StaticMethodsInterceptPoint;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.v2.ClassInstanceMethodsEnhancePluginDefineV2;
+import org.apache.skywalking.apm.agent.core.plugin.interceptor.v2.InstanceMethodsInterceptV2Point;
 import org.apache.skywalking.apm.agent.core.plugin.match.ClassMatch;
 import org.apache.skywalking.apm.agent.core.plugin.match.NameMatch;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
-public class WebFluxWebClientInstrumentation extends ClassInstanceMethodsEnhancePluginDefineV2 {
+public abstract class WebFluxWebClientInstrumentation extends ClassInstanceMethodsEnhancePluginDefineV2 {
     private static final String ENHANCE_CLASS = "org.springframework.web.reactive.function.client.ExchangeFunctions$DefaultExchangeFunction";
-    private static final String INTERCEPT_CLASS = "org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient.WebFluxWebClientInterceptor";
 
     @Override
     protected ClassMatch enhanceClass() {
@@ -54,7 +53,7 @@ public class WebFluxWebClientInstrumentation extends ClassInstanceMethodsEnhance
 
                     @Override
                     public String getMethodsInterceptorV2() {
-                        return INTERCEPT_CLASS;
+                        return getInterceptClass();
                     }
 
                     @Override
@@ -69,4 +68,6 @@ public class WebFluxWebClientInstrumentation extends ClassInstanceMethodsEnhance
     public StaticMethodsInterceptPoint[] getStaticMethodsInterceptPoints() {
         return new StaticMethodsInterceptPoint[0];
     }
+
+    protected abstract String getInterceptClass();
 }

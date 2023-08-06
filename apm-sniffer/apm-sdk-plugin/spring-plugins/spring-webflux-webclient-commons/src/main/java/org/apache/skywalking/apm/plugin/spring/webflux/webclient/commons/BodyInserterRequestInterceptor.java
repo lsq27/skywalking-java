@@ -16,7 +16,7 @@
  *
  */
 
-package org.apache.skywalking.apm.plugin.spring.webflux.v5.webclient;
+package org.apache.skywalking.apm.plugin.spring.webflux.webclient.commons;
 
 import org.apache.skywalking.apm.agent.core.context.CarrierItem;
 import org.apache.skywalking.apm.agent.core.context.ContextCarrier;
