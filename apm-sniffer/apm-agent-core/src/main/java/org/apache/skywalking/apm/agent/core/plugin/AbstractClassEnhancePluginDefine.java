@@ -90,6 +90,26 @@ public abstract class AbstractClassEnhancePluginDefine {
             }
         }
 
+        //find disproof classes and methods for enhance class
+        String[] disproofClasses = disproofClasses();
+        if (disproofClasses != null) {
+            for (String disproofClass : disproofClasses) {
+                if (finder.exist(disproofClass, classLoader)) {
+                    LOGGER.warn("enhance class {} by plugin {} is not activated. Disproof class {} exists.", transformClassName, interceptorDefineClassName, disproofClass);
+                    return null;
+                }
+            }
+        }
+        List<WitnessMethod> disproofMethods = disproofMethods();
+        if (!CollectionUtil.isEmpty(disproofMethods)) {
+            for (WitnessMethod disproofMethod : disproofMethods) {
+                if (finder.exist(disproofMethod, classLoader)) {
+                    LOGGER.warn("enhance class {} by plugin {} is not activated. Disproof method {} exists.", transformClassName, interceptorDefineClassName, disproofMethod);
+                    return null;
+                }
+            }
+        }
+
         /**
          * find origin class source code for interceptor
          */
@@ -158,6 +178,26 @@ public abstract class AbstractClassEnhancePluginDefine {
     }
 
     protected List<WitnessMethod> witnessMethods() {
+        return null;
+    }
+
+    /**
+     * Get classname list of the classes when which exist, target class will not be enhanced.
+     *
+     * @return disproof classname list
+     * @see #witnessClasses()
+     */
+    protected String[] disproofClasses() {
+        return new String[] {};
+    }
+
+    /**
+     * Get list of the methods when which exist, target class will not be enhanced.
+     *
+     * @return disproof method list
+     * @see #witnessMethods()
+     */
+    protected List<WitnessMethod> disproofMethods() {
         return null;
     }
 

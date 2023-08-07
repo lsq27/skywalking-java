@@ -363,12 +363,12 @@ The following sections will tell you how to implement the interceptor.
 tomcat-7.x/8.x=TomcatInstrumentation
 ```
 
-4. Set up `witnessClasses` and/or `witnessMethods` if the instrumentation has to be activated in specific versions.
+4. Set up `witnessClasses` and/or `witnessMethods` and/or `disproofClasses` and/or `disproofMethods` if the instrumentation has to be activated in specific versions.
 
    Example:
 
    ```java
-   // The plugin is activated only when the foo.Bar class exists.
+   // The plugin is activated only when the foo.Bar class exists and the baz.Qux class does not exist.
    @Override
    protected String[] witnessClasses() {
      return new String[] {
@@ -376,11 +376,25 @@ tomcat-7.x/8.x=TomcatInstrumentation
      };
    }
 
-   // The plugin is activated only when the foo.Bar#hello method exists.
+   @Override
+   protected String[] disproofClasses() {
+     return new String[] {
+       "baz.Qux"
+     };
+   }
+   // The plugin is activated only when the foo.Bar#hello method exists and the baz.Qux#world method does not exist.
    @Override
    protected List<WitnessMethod> witnessMethods() {
      List<WitnessMethod> witnessMethodList = new ArrayList<>();
      WitnessMethod witnessMethod = new WitnessMethod("foo.Bar", ElementMatchers.named("hello"));
+     witnessMethodList.add(witnessMethod);
+     return witnessMethodList;
+   }
+
+   @Override
+   protected List<WitnessMethod> disproofMethods() {
+     List<WitnessMethod> witnessMethodList = new ArrayList<>();
+     WitnessMethod witnessMethod = new WitnessMethod("baz.Qux", ElementMatchers.named("world"));
      witnessMethodList.add(witnessMethod);
      return witnessMethodList;
    }
