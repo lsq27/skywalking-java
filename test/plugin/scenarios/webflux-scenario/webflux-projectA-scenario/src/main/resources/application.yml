@@ -16,6 +16,4 @@
 #
 
 server:
-  servlet:
-    context-path: /projectA
-    port: 8080
+  port: 8080

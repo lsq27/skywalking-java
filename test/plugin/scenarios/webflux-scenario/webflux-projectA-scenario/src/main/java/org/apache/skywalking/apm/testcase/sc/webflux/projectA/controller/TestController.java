@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
+@RequestMapping("/projectA")
 @RestController
 public class TestController {
 
