@@ -26,7 +26,7 @@ The test case project must be packaged as `project-name.zip`, including `startup
 
 Take the following test projects as examples:
 * [sofarpc-scenario](../../../../../test/plugin/scenarios/sofarpc-scenario) is a single project case.
-* [webflux-scenario](../../../../../test/plugin/scenarios/webflux-scenario) is a case including multiple projects.
+* [webflux-5.x-scenario](../../../../../test/plugin/scenarios/webflux-5.x-scenario) is a case including multiple projects.
 * [jdk17-with-gson-scenario](../../../../../test/plugin/scenarios/jdk17-with-gson-scenario) is a single project case with JDK17.
 
 ### Tomcat-container Image Introduction
@@ -421,7 +421,7 @@ java -jar ${agent_opts} "-Dskywalking.agent.service_name=jettyclient-scenario"  
 
 **Take the following test cases as examples**
 * [undertow](../../../../../test/plugin/scenarios/undertow-scenario/bin/startup.sh)
-* [webflux](../../../../../test/plugin/scenarios/webflux-scenario/webflux-dist/bin/startup.sh)
+* [webflux](../../../../../test/plugin/scenarios/webflux-6.x-scenario/webflux-dist/bin/startup.sh)
 
 
 ## Best Practices

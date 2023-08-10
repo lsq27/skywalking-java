@@ -19,41 +19,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.apache.skywalking</groupId>
+        <artifactId>webflux-6.x-scenario</artifactId>
+        <version>5.0.0</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.apache.skywalking</groupId>
-    <artifactId>webflux-scenario</artifactId>
-    <packaging>pom</packaging>
-    <version>5.0.0</version>
-    <modules>
-        <module>webflux-projectA-scenario</module>
-        <module>webflux-projectB-scenario</module>
-        <module>webflux-dist</module>
-    </modules>
-
-    <name>skywalking-webflux-scenario</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <compiler.version>1.8</compiler.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <test.framework.version>2.1.1.RELEASE</test.framework.version>
-        <docker.image.version>${test.framework.version}</docker.image.version>
-    </properties>
+    <artifactId>webflux-dist</artifactId>
 
     <build>
-        <finalName>webflux-scenario</finalName>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${compiler.version}</source>
-                    <target>${compiler.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>assemble</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/assembly.xml</descriptor>
+                            </descriptors>
+                            <outputDirectory>../target/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -20,13 +20,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
+        <artifactId>webflux-6.x-scenario</artifactId>
         <groupId>org.apache.skywalking</groupId>
-        <artifactId>webflux-scenario</artifactId>
         <version>5.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>webflux-projectA-scenario</artifactId>
+    <artifactId>webflux-projectB-scenario</artifactId>
 
     <dependencies>
         <dependency>
@@ -42,7 +42,7 @@
     </dependencies>
 
     <build>
-        <finalName>webflux-projectA-scenario</finalName>
+        <finalName>webflux-projectB-scenario</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
