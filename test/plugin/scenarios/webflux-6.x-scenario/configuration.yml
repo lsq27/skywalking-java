@@ -19,4 +19,4 @@ entryService: http://localhost:8080/projectA/testcase
 healthCheck: http://localhost:8080/projectA/healthCheck
 runningMode: with_optional
 startScript: ./bin/startup.sh
-withPlugins: apm-spring-webflux-5.x-plugin-*.jar;apm-spring-webflux-commons-*.jar
+withPlugins: apm-spring-webflux-6.x-plugin-*.jar;apm-spring-webflux-commons-*.jar
