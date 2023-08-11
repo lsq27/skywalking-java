@@ -18,7 +18,7 @@
 
 package org.apache.skywalking.apm.plugin.spring.cloud.gateway.v20x.define;
 
-public class DispatcherHandlerInstrumentation extends org.apache.skywalking.apm.plugin.spring.webflux.v5.define.DispatcherHandlerInstrumentation {
+public class DispatcherHandlerInstrumentation extends org.apache.skywalking.apm.plugin.spring.webflux.v5.define.DispatcherHandlerInstrumentation5x {
 
     @Override
     protected String[] witnessClasses() {

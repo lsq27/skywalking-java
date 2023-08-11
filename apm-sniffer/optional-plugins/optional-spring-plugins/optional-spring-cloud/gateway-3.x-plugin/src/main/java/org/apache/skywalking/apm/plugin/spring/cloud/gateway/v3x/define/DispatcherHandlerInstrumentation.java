@@ -19,11 +19,11 @@
 package org.apache.skywalking.apm.plugin.spring.cloud.gateway.v3x.define;
 
 /**
- * This class is used for enable {@link org.apache.skywalking.apm.plugin.spring.webflux.v5.define.DispatcherHandlerInstrumentation}
+ * This class is used for enable {@link org.apache.skywalking.apm.plugin.spring.webflux.v5.define.DispatcherHandlerInstrumentation5x}
  * class when {@link org.springframework.cloud.gateway.config.GatewayEnvironmentPostProcessor} class is exist
  */
 public class DispatcherHandlerInstrumentation extends
-        org.apache.skywalking.apm.plugin.spring.webflux.v5.define.DispatcherHandlerInstrumentation {
+        org.apache.skywalking.apm.plugin.spring.webflux.v5.define.DispatcherHandlerInstrumentation5x {
 
     @Override
     protected String[] witnessClasses() {

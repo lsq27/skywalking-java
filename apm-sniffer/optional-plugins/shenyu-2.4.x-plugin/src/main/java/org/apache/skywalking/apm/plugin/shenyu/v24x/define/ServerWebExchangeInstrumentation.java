@@ -23,7 +23,7 @@ package org.apache.skywalking.apm.plugin.shenyu.v24x.define;
  * we can put the snapshot into the enhanced ServerWebExchange object.
  */
 public class ServerWebExchangeInstrumentation extends
-        org.apache.skywalking.apm.plugin.spring.webflux.v5.define.ServerWebExchangeInstrumentation {
+        org.apache.skywalking.apm.plugin.spring.webflux.define.ServerWebExchangeInstrumentation {
 
     @Override
     protected String[] witnessClasses() {

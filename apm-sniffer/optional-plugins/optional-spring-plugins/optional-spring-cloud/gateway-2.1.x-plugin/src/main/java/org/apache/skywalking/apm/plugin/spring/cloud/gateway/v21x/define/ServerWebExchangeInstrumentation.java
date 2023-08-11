@@ -18,7 +18,7 @@
 
 package org.apache.skywalking.apm.plugin.spring.cloud.gateway.v21x.define;
 
-public class ServerWebExchangeInstrumentation extends org.apache.skywalking.apm.plugin.spring.webflux.v5.define.ServerWebExchangeInstrumentation {
+public class ServerWebExchangeInstrumentation extends org.apache.skywalking.apm.plugin.spring.webflux.define.ServerWebExchangeInstrumentation {
 
     @Override
     protected String[] witnessClasses() {
